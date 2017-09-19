@@ -1,0 +1,65 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+      %h4#myModalLabel.modal-title Create Task
+    .modal-body{:id => "new_task"}
+      -if @task
+        = simple_form_for(@task) do |f|
+          = f.error_notification
+          .form-inputs
+            = f.input :title, label: false, placeholder: 'Task Title'
+            .row.form-date
+              .col-xs-4
+                = f.label 'Start Date:'
+              .col-xs-4.col-xs-offset-4
+                = f.text_field :startdate, 'data-behavior' => 'datepicker', :value => Time.now.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+            %br/
+            .row.form-date
+              .col-xs-4
+                = f.label 'End Date'
+              .col-xs-4.col-xs-offset-4
+                = f.text_field :enddate, 'data-behavior' => 'datepicker', label: 'End Date', :value => Time.now.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+                = f.hidden_field :study_id, :value => @study.id
+
+            = f.label 'Allocated Time'
+            .row
+              .col-xs-3
+                = f.label 'Lead DM:'
+              .col-xs-5
+
+              .col-xs-2
+                = f.input :lead_dm_time , label: false
+
+              .col-xs-2
+                hours
+
+            .row
+              .col-xs-3
+                = f.label 'DM:'
+              .col-xs-5
+
+              .col-xs-2
+                = f.input :dm_time , label: false, value: 0
+              .col-xs-2
+                hours
+
+            .row
+              .col-xs-3
+                = f.label 'Support DM:'
+              .col-xs-5
+
+              .col-xs-2
+                = f.input :support_dm_time , label: false, value: 0
+              .col-xs-2
+                hours
+          .form-actions.text-center
+            .row
+              .col-xs-3.col-xs-offset-3
+                %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+              .col-xs-3
+                = f.button :submit, :class => 'update-study', value: 'DONE'
+              .col-xs-3
+
+

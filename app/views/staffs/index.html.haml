@@ -1,0 +1,64 @@
+- content_for :title, "Staff Management"
+
+.container-fluid
+  .row#main-content.active
+    %h2 Staff Management
+    %hr{:style => "margin-bottom: 0"}/
+    %br/
+    - if current_user.role == "admin" && !current_user.nil?
+      = link_to new_user_path, class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+        %button.btn.btn-default{:type => "button", :id => "addStaff"}
+          %i.fa.fa-plus-circle.fa-lg{"aria-hidden" => "true"}
+          ADD BY CICS ACCOUNT
+        %br/
+        %br/
+
+    - if current_user.role == "admin" && !current_user.nil?
+      = link_to new_staff_path, class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+        %button.btn.btn-default{:type => "button", :id => "addStaff"}
+          %i.fa.fa-plus-circle.fa-lg{"aria-hidden" => "true"}
+          ADD FROM USER LIST
+        %br/
+        %br/
+
+    %table.table.table-hover.table-bordered.text-center
+      %thead
+        %tr
+          %th.text-center CiCS
+          / %th.text-center id
+          %th.text-center Name
+          %th.text-center Grade
+          %th.text-center Current FTE
+          %th.text-center Start Date
+          %th.text-center End Date
+          %th.text-center Edit
+          %th.text-center Add FTE
+      %tbody  
+        - @staffs.each do |staff|
+          %tr
+            %td= staff.name
+            / %td= staff.id
+            %td= staff.staffgivenname
+            %td= staff.grade
+            / need optimise
+            %td
+              - staff.ftes.each do |fte|
+                - if Time.now.month >= fte.startdate.month && Time.now.month <= fte.enddate.month && Time.now.year == fte.startdate.year && Time.now.year == fte.enddate.year
+                  %p= fte.FTE_value
+            %td
+              - staff.ftes.each do |fte|
+                - if Time.now.month >= fte.startdate.month && Time.now.month <= fte.enddate.month && Time.now.year == fte.startdate.year && Time.now.year == fte.enddate.year
+                  %p= fte.startdate.strftime("%d/%m/%Y")
+            %td
+              - staff.ftes.each do |fte|
+                - if Time.now.month >= fte.startdate.month && Time.now.month <= fte.enddate.month && Time.now.year == fte.startdate.year && Time.now.year == fte.enddate.year
+                  %p= fte.enddate.strftime("%d/%m/%Y")
+            %td
+              = link_to edit_staff_path(staff), class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+                %i.fa.fa-gear.fa-lg.text-success{"aria-hidden" => "true"}
+            %td
+              = link_to new_fte_path(staff_id: staff), class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+                %i.fa.fa-calendar-plus-o.fa-lg.text-success{"aria-hidden" => "true"}
+    
+
+  

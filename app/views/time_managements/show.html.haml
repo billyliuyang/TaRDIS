@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Chart year:
+  = @time_management.chart_year
+
+= link_to 'Edit', edit_time_management_path(@time_management)
+\|
+= link_to 'Back', time_managements_path

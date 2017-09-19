@@ -1,0 +1,50 @@
+= simple_form_for(@staff) do |f|
+  = f.error_notification
+
+  .form-inputs
+    .row
+      .col-xs-4
+        = f.label 'CiCS Account'
+      .col-xs-4.col-xs-offset-4
+        = f.label @staff.name
+    .row
+      .col-xs-4
+        = f.label 'Givenname'
+      .col-xs-4.col-xs-offset-4
+        = f.input :staffgivenname, label: false
+    .row
+      .col-xs-4
+        = f.label 'Grade'
+      .col-xs-4.col-xs-offset-4
+        = f.input :grade, collection: 4..8, label: false
+    %table.table.table-hover.table-bordered.text-center
+      %thead
+        %tr
+          %th.text-center FTE
+          %th.text-center START
+          %th.text-center End
+          %th.text-center Delete
+      %tbody
+        - @staff.ftes.order(:startdate).reverse.each do |fte|  
+          %tr
+            %td= fte.FTE_value
+            %td= fte.startdate.strftime("%d/%m/%Y")
+            %td= fte.enddate.strftime("%d/%m/%Y")
+            %td= link_to 'Destroy', fte, :method => :delete, :data => { :confirm => 'Are you sure?' }
+            / %td
+            /   = link_to @fte, :class => 'delete-study', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            /     %i.fa.fa-trash.fa-2x.text-danger{"aria-hidden" => "true"}
+    - if current_user.role == "admin" && !current_user.nil?
+      .row.delete
+        .col-xs-6
+          = link_to @staff, :class => 'delete-study', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+            %i.fa.fa-trash.fa-2x.text-danger{"aria-hidden" => "true"}
+            DELETE STAFF
+
+  .form-actions.text-center
+    .row
+      .col-xs-3.col-xs-offset-3
+        %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+      .col-xs-3
+        = f.button :submit, :class => 'update-study', value: 'UPDATE'
+      .col-xs-3

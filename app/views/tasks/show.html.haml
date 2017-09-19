@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @task.title
+%p
+  %b Startdate:
+  = @task.startdate
+%p
+  %b Enddate:
+  = @task.enddate
+%p
+  %b Lead dm time:
+  = @task.lead_dm_time
+%p
+  %b Dm time:
+  = @task.dm_time
+%p
+  %b Support dm time:
+  = @task.support_dm_time
+%p
+  %b Study:
+  = @task.study
+
+= link_to 'Edit', edit_task_path(@task)
+\|
+= link_to 'Back', tasks_path

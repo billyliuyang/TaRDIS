@@ -1,0 +1,114 @@
+!!!
+%html
+  %head
+    %title Tardis - #{content_for(:title)}
+    / %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %meta{ :'http-equiv' => 'X-UA-Compatible', content: 'IE=edge' }
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}
+    = stylesheet_link_tag    "application", media: :all
+    = javascript_include_tag "application"
+    = favicon_link_tag '/favicon.ico'
+    = csrf_meta_tags
+    / Bootstrap Date-Picker Plugin
+    %script{:src => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js", :type => "text/javascript"}
+    %link{:href => "https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css", :rel => "stylesheet"}/
+
+
+  %body{ class: environment_notice_body_class }
+    = render 'layouts/environment_notice'
+    .flash-messages
+      - flash.each do |name, msg|
+        - next unless name == 'alert' || name == 'notice'
+        .alert.fade.in
+          .container
+            - if name == 'notice'
+              = fa_icon('check', class: 'flash-success')
+            - else
+              = fa_icon('warning', class: 'flash-error')
+            = msg
+            %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
+
+
+    %noscript
+      .warning-page-cover
+        .alert.alert-info
+          %h2 Sorry, it appears that you are using a web browser without JavaScript which prevents us offering you a rich online experience.
+          %p Please enable JavaScript or use a different web browser, or alternatively contact the CiCS Helpdesk for assistance.
+
+    #wrap
+      %nav#main-nav.navbar.navbar-default.navbar-fixed-top
+        .container
+          .navbar-header
+            %button.navbar-toggle{ data: { target: ".navbar-collapse", toggle: :collapse, type: :button } }
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            = link_to '#', class: 'navbar-brand active' do
+              = fa_icon 'bars'
+              Tardis
+
+          .collapse.navbar-collapse
+            - if user_signed_in?
+              %ul.nav.navbar-nav.text-center
+                / = navbar_link_to :root, title: "Go to the home page", identifier: :home do
+                /   = fa_icon 'home'
+                /   Home
+
+                / = navbar_link_to '#', title: "Go to another page", identifier: :another_page do
+                /   = fa_icon 'question-circle'
+                /   Another Page
+              %ul.nav.navbar-nav.navbar-right
+                %li.dropdown
+                  = link_to '#', data: { toggle: :dropdown }, class: 'dropdown-toggle', role: 'button', 'aria-haspopup' => true, id: 'user_givenname', 'aria-expanded' => false do
+                    = fa_icon 'user', text: current_user.givenname
+                    %span
+                      %b.caret
+                  %ul.dropdown-menu
+                    %li
+                      / = link_to "#", method: :delete, class: 'logout-btn', title: "Log out of the system" do
+                      /   = fa_icon 'sign-out', text: 'Log out'
+                      = link_to destroy_user_session_path, method: :delete, class: 'logout-btn', title: "Log out of the system" do
+                        = fa_icon 'sign-out', text: 'Log out'
+
+            -# - if user_signed_in?
+            -#   %ul.nav.navbar-nav.navbar-right
+            -#     %li.dropdown
+            -#       = link_to '#', data: { toggle: :dropdown }, class: 'dropdown-toggle', role: 'button', 'aria-haspopup' => true, 'aria-expanded' => false do
+            -#         = fa_icon 'user', text: current_user.email
+            -#         %b.caret
+            -#       %ul.dropdown-menu
+            -#         %li
+            -#           = link_to destroy_user_session_path, method: :delete, title: "Log out of the system" do
+            -#             = fa_icon 'sign-out', text: 'Log out'
+
+      .row.sidebar.active
+        - if !current_user.nil?
+          - if current_user.role == "admin" || current_user.role == "manager"
+            .wrapper
+
+              %a.active{:href => "/studies/", :role => "button"}
+                %p STUDY
+
+            %a.active{:href => "/staffs/", :role => "button"}
+              %p 
+                STAFF MANAGEMENT
+
+          - if current_user.role == "admin"
+            %a.active{:href => "/users", :role => "button"}
+              %p
+                USER MANAGEMENT
+        
+        %div.bottom-list
+          - if !current_user.nil?
+            - if current_user.role == "admin" || current_user.role == "manager"
+              %span.text-right.pull-right
+                = link_to new_study_path, class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+                  %button.btn.btn-default{:type => "button", :id => "addStudy"}
+                    ADD NEW STUDY
+
+          %p Developed by
+          = link_to image_tag("epigenesys-logo-only.png", size: "165x165", alt: "epigenesys Logo", class: "img-responsive logo"), "https://www.epigenesys.org.uk/", target: :_blank
+
+      #main-container.container.active
+
+        = yield

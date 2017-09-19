@@ -1,0 +1,38 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+      %h4#myModalLabel.modal-title ADD DATA MANAGER FROM USER LIST
+    .modal-body{:id => "new_staff"}
+      = simple_form_for(@staff) do |f|
+        = f.error_notification
+
+        .form-inputs
+          .row
+            .col-xs-4
+              = f.label 'Choose a User'
+            .col-xs-6.col-xs-offset-2
+              = f.input :name, label: false, :collection => @users, :label_method => lambda { |user| "#{user.givenname} -- #{user.username}"}, :value_method => lambda { |user| "#{user.username}"}
+              /# only save CiCS account as username
+              / = f.input :name, label: false, :collection => @users, :label_method => lambda { |user| "#{user.username} -- #{user.givenname}"}, :value_method => :username
+
+          .row
+            .col-xs-4
+              = f.label 'Name'
+            .col-xs-6.col-xs-offset-2
+              = f.input :staffgivenname, label: false
+
+          .row
+            .col-xs-4
+              = f.label 'Grade'
+            .col-xs-6.col-xs-offset-2
+              = f.input :grade, collection: 4..8, label: false
+  
+        .form-actions.text-center
+          .row
+            .col-xs-3.col-xs-offset-3
+              %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+            .col-xs-3
+              = f.button :submit, :class => 'update-study', value: 'CREATE STAFF'
+            .col-xs-3

@@ -1,0 +1,90 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+      %h4#myModalLabel.modal-title Assign Staff
+    .modal-body{:id => "assign_staff_task"}
+      %h4 Allowcated Staff
+      .row
+        .col-xs-3
+          %p Lead DM:
+        .col-xs-2
+          %p 
+            = @task.lead_dm_time
+            hours
+        .col-xs-7
+      .row
+        .col-xs-2
+        .col-xs-10
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 1
+              %span.label.label-default 
+                = staff.staff.name
+                = link_to staff, :class => 'delete-staff', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                  %i.fa.fa-times.fa-lg.text-danger{"aria-hidden" => "true"}
+              \&nbsp
+
+      %br
+      .row
+        .col-xs-3
+          %p DM:
+        .col-xs-2
+          %p 
+            = @task.dm_time
+            hours
+        .col-xs-7
+      .row
+        .col-xs-2
+        .col-xs-10
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 2
+              %span.label.label-default 
+                = staff.staff.name
+                = link_to staff, :class => 'delete-staff', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                  %i.fa.fa-times.fa-lg.text-danger{"aria-hidden" => "true"}
+              \&nbsp
+      
+      %br
+      .row
+        .col-xs-3
+          %p support DM:
+        .col-xs-2
+          %p 
+            = @task.support_dm_time
+            hours
+        .col-xs-7
+      .row
+        .col-xs-2
+        .col-xs-10
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 3
+              %span.label.label-default 
+                = staff.staff.name
+                = link_to staff, :class => 'delete-staff', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+                  %i.fa.fa-times.fa-lg.text-danger{"aria-hidden" => "true"}
+              \&nbsp
+
+      %br
+        %table.table.table-striped
+          %tr
+            %th Name
+            %th 
+              .col-xs-2
+              .col-xs-10
+                Assign as
+          - @staffs.each do |staff|
+            -if !@names.include?(staff.name)
+              %tr
+                %td
+                  = staff.name
+                %td 
+                  .col-xs-2
+                  .col-xs-3{:style => "text-align:center"}
+                    = button_to 'Lead DM', line_staffs_path(staff_id: staff, task_id: @task, grade: 1)
+                  .col-xs-3{:style => "text-align:center"} 
+                    = button_to 'DM', line_staffs_path(staff_id: staff, task_id: @task, grade: 2)
+                  .col-xs-3{:style => "text-align:center"}
+                    = button_to 'Support DM', line_staffs_path(staff_id: staff, task_id: @task, grade: 3)
+                  .col-xs-1
+

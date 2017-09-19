@@ -1,0 +1,21 @@
+%h1 Listing time_managements
+
+%table
+  %thead
+    %tr
+      %th Chart year
+      %th
+      %th
+      %th
+
+  %tbody
+    - @time_managements.each do |time_management|
+      %tr
+        %td= time_management.chart_year
+        %td= link_to 'Show', time_management
+        %td= link_to 'Edit', edit_time_management_path(time_management)
+        %td= link_to 'Destroy', time_management, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Time management', new_time_management_path

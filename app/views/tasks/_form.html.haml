@@ -1,0 +1,126 @@
+= simple_form_for(@task) do |f|
+  = f.error_notification
+  
+  .form-inputs
+    = f.input :title, label: false, placeholder: 'Task Title'
+
+    .row.delete
+      .col-xs-6
+        = link_to @task, :class => 'delete-study', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+          %i.fa.fa-trash.fa-2x.text-danger{"aria-hidden" => "true"}
+          DELETE TASK
+    .row.form-date
+      .col-xs-4
+        %p Start Date
+      .col-xs-4.col-xs-offset-4
+        = f.text_field :startdate, 'data-behavior' => 'datepicker', :value => @task.startdate.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+
+    %br/
+    .row.form-date
+      .col-xs-4
+        %p End Date
+      .col-xs-4.col-xs-offset-4
+        = f.text_field :enddate, 'data-behavior' => 'datepicker', label: 'End Date', :value => @task.enddate.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+        = f.hidden_field :study_id, :value => @task.study.id
+
+    %p
+      %strong Assign Staff
+
+    %div
+
+      .assignPeople
+        %select.form-control#staffNameOption
+          %option{:disabled => "disabled", :selected => "selected", :value => ""} Select staff
+          - @staffs.each do |staff|
+            -if !@names.include?(staff.staffgivenname)
+              %option{:value => "#{staff.id}"}= staff.staffgivenname
+
+      .assignPeople
+        %select.form-control#roleOption
+          %option{:disabled => "disabled", :selected => "selected", :value => ""} Select role
+          %option{:value => 1} Lead DM
+          %option{:value => 2} DM
+          %option{:value => 3} Support DM
+
+      .assignPeople
+        %a{:href => "#", :id => "setStaff", "data-task" => @task.id} + Assign Staff
+
+    .row
+      %br
+
+    = f.label 'Allocated Time'
+
+    %div#assignFields
+      .row
+        .col-xs-3
+          %p Lead DM:
+        .col-xs-5
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 1
+              %div.assignedStaff
+                %a{:href => "#", "data-staff" => staff.id, :id => "delete-staff", "data-task" => @task.id, "data-confirm" => 'Are you sure?' }
+                  = fa_icon('close')
+                = staff.staff.staffgivenname
+              
+        .col-xs-2
+          = f.input :lead_dm_time, label: false
+
+        .col-xs-2
+          hours
+          
+      .row
+        .col-xs-3
+          %p DM:
+        .col-xs-5
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 2
+              %div.assignedStaff
+                %a{:href => "#", "data-staff" => staff.id, :id => "delete-staff", "data-task" => @task.id, "data-confirm" => 'Are you sure?' }
+                  = fa_icon('close')
+                = staff.staff.staffgivenname
+
+        .col-xs-2
+          = f.input :dm_time, label: false
+        .col-xs-2
+          hours
+
+      .row
+        .col-xs-3
+          %p Support DM:
+        .col-xs-5
+          - @task.line_staffs.each do |staff|
+            - if staff.grade == 3
+              %div.assignedStaff
+                %a{:href => "#", "data-staff" => staff.id, :id => "delete-staff", "data-task" => @task.id, "data-confirm" => 'Are you sure?' }
+                  = fa_icon('close')
+                = staff.staff.staffgivenname
+
+        .col-xs-2
+          = f.input :support_dm_time, label: false
+        .col-xs-2
+          hours
+      .row
+        .col-xs-4
+          = f.label 'Total Hours:'
+
+        .col-xs-4.col-xs-offset-4
+          .row
+            .col-xs-6.text-center              
+              - if @task.lead_dm_time == nil
+                %p.hidden= @task.lead_dm_time = 0
+              - if @task.dm_time == nil
+                %p.hidden= @task.dm_time = 0
+              - if @task.support_dm_time == nil
+                %p.hidden= @task.support_dm_time = 0
+              = [@task.lead_dm_time,@task.dm_time,@task.support_dm_time].sum
+            .col-xs-6
+              %p hours
+  
+  %br/
+  .form-actions.text-center
+    .row
+      .col-xs-3.col-xs-offset-3
+        %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+      .col-xs-3
+        = f.button :submit, :class => 'update-study', value: 'DONE'
+      .col-xs-3

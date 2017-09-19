@@ -1,0 +1,30 @@
+= simple_form_for(@study) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :title
+    .row.delete
+      .col-xs-6
+        = link_to @study, :class => 'delete-study', :method => :delete, :data => { :confirm => 'Are you sure?' } do
+          %i.fa.fa-trash.fa-2x.text-danger{"aria-hidden" => "true"}
+          DELETE STUDY
+
+    .row.form-date
+      .col-xs-4
+        = f.label 'Start Date'
+        %br/
+        = f.text_field :startdate, 'data-behavior' => 'datepicker', :value => @study.startdate.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+      .col-xs-4.col-xs-offset-4
+        = f.label 'End Date'
+        %br/
+        = f.text_field :enddate, 'data-behavior' => 'datepicker', :value => @study.enddate.strftime("%d/%m/%Y"), :class => 'form-control form-date'
+
+    = f.input :description
+
+  .form-actions.text-center
+    .row
+      .col-xs-3.col-xs-offset-3
+        %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+      .col-xs-3
+        = f.button :submit, :class => 'update-study', value: 'DONE'
+      .col-xs-3

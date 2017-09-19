@@ -1,0 +1,45 @@
+@import 'variables'
+@import 'bootstrap/mixins'
+.flash-messages
+  z-index: 800
+  position: fixed
+  top: $navbar-height + 1px
+  left: 0
+  right: 0
+  margin: 0
+  padding: 0
+  .alert
+    border-radius: 0
+    margin: 0
+    background-color: #EFD050
+    color: darken(#ad8f12, 15%)
+    text-align: center
+    padding: 0
+    border: none
+    & + .alert
+      margin-top: 1px
+    .container
+      margin-top: 3px
+      margin-bottom: 2px
+      line-height: 1.5
+    @include transition(height 0.2s linear)
+    &.fade
+      opacity: 1
+      height: 0px
+      overflow: hidden
+    &.in
+      height: auto
+      min-height: 22px
+      overflow: auto
+
+  .flash-success, a
+    color: #3f629e
+  .flash-error
+    color: #7633a0
+
+  a
+    margin-left: 5px
+
+body.has-environment-notice
+  .flash-messages
+    top: $navbar-height + $environment-notice-height + 1px

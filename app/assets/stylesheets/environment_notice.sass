@@ -1,0 +1,18 @@
+@import 'variables'
+
+body.has-environment-notice
+  padding-top: $environment-notice-height
+  .environment-notice
+    height: $environment-notice-height
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    text-align: center
+    z-index: 1200
+    width: auto
+    padding: 5px 3px
+    border-radius: 0
+    font-size: 12px
+  .navbar-fixed-top
+    top: $environment-notice-height

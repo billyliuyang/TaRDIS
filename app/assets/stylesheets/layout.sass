@@ -1,0 +1,386 @@
+@import 'variables'
+
+html,body
+  height: 100%
+  font-family: $font-family
+
+#wrap
+  position: relative
+  // min-height: 100%
+  // height: auto !important
+  // margin: 0 auto -1*$footer-height
+  padding: 0 0 1px
+  display: table
+  width: 100%
+  height: 100%
+  box-sizing: border-box
+
+  #main-nav
+
+    .container
+      width: 100%
+
+      a.navbar-brand
+        padding-left: 30px
+        padding-right: 80px
+        @include animateColour
+
+        i.fa-bars
+          margin-right: 30px
+        
+      a.navbar-brand.active
+        background: #464869
+        color: #fff
+        @include animateColour
+  
+  /* Sidebar styling */
+  .row.sidebar.active
+    left: 213px
+    width: 228px
+    @include animateSidebar
+
+  .row.sidebar
+    position: fixed
+    z-index: 21
+    height: 100%
+    margin-top: 50px
+    background-color: #464869
+    width: 228px
+    margin-left: -228px
+    left: 0
+    color: #ccc
+    padding: 20px 20px 20px 45px
+    font-size: 14px
+    letter-spacing: 3px
+    @include animateSidebar
+
+    a
+      text-decoration: none
+      color: #ccc
+
+      p
+        margin-bottom: 30px
+
+    div.wrapper
+      margin-bottom: 30px
+
+      p
+        margin-bottom: 10px
+
+    .well.sub-list
+      border: none
+      background: transparent
+      padding: 0 19px
+
+    div.bottom-list
+      position: absolute
+      bottom: 80px
+
+      button#addStudy
+        padding: 18px
+        background: transparent
+        color: #fff
+        margin-bottom: 30px
+
+#main-container
+  padding-top: 50px
+  padding-left: 0
+  padding-right: 0
+  width: 100%
+  height: 100%
+  box-sizing: border-box
+  // margin: 0
+  // width: 1024px !important
+
+  
+  .row#main-content.active
+    padding-left: 213px
+    @include animateSidebar
+
+  .error-page
+    padding-left: 230px
+
+  .row#main-content
+    // background: #fafafa
+    position: relative
+    overflow-y: auto
+    width: 100%
+    height: 100%
+    margin-right: 0
+    margin-left: 0
+    min-width: 1200px
+    @include animateSidebar
+
+    /* Study Lists Styling */
+    .col-xs-3
+      background-color: #fff
+      border: 1px solid #e7e7e7
+      height: 100%
+      padding: 47px 25px 142px
+      @include animateSidebar
+
+      .fixed-title
+        margin-bottom: 15px
+
+      .wrapper
+
+        .well.sub-list
+          background: transparent
+          border: none
+          box-shadow: none
+          padding: 14px 19px 5px
+          margin-bottom: 0
+
+          .row
+            margin-bottom: 9px
+
+    /* Gantt Chart styling */
+    .col-xs-9
+      height: 100%
+      padding-bottom: 148px
+
+      .month
+        border: $border-generic
+        border-bottom: none
+
+        .col-xs-12
+          padding: 8px
+
+          .year
+            font-size: 22px
+            font-weight: 300
+
+        .col-xs-1
+          border-right: $border-generic
+          border-bottom: $border-generic
+          padding: 8px
+
+          &:last-of-type
+            border-right: none
+
+    .row.area
+      border: $border-generic
+      border-top: none
+      padding: 5px 0
+
+      .col-xs-1
+        padding: 0
+        margin: 0
+          
+        &:last-of-type
+          border-right: none
+
+    #report
+      padding-left: 0
+      position: fixed
+      height: 200px
+      bottom: 0
+      left: 0
+      width: 100%
+      z-index: 20
+      min-width: 1200px
+      
+      @include animateSidebar
+
+      .footer
+        height: 100%
+        width: 100%
+        background: #fff
+        border: $border-generic
+        border-left: none
+        // padding: 0 15px 15px 15px
+        overflow: hidden
+        // overflow-y: auto 
+        position: relative
+
+        .data 
+          // overflow-y: scroll
+          // width: 100%
+          // height: 100%
+          position: absolute
+          top: 28px
+          bottom: 0px
+          left: 0px
+          right: -15px
+          overflow: auto
+
+        .row 
+          margin: 0
+
+          .col-xs-3
+            padding: 0
+            border: none
+
+          .col-xs-9.header, p.header
+            background-color: #f5f7f9
+            padding: 0
+            border-bottom: 1px solid #e9e9e9
+            font-size: 12px
+            font-weight: 500
+            color: #8d959c
+            letter-spacing: 1px
+            text-transform: uppercase
+            text-align: center
+
+            .col-xs-1
+              padding: 5px 20px
+              
+          .col-xs-9
+            padding: 0
+            font-size: 12px
+
+            .row
+              border-bottom: 1px solid #e9e9e9
+
+              p
+                margin-bottom: 0
+
+            .col-xs-1
+              padding: 5px 20px
+
+          p.header
+            padding: 5px
+            margin-bottom: 0
+            text-align: center
+
+          p.name
+            margin-bottom: 0
+            color: #000
+            padding: 5px
+            font-size: 12px
+            border-bottom: 1px solid #e9e9e9
+
+        .btn-group
+          margin-bottom: 5px
+
+          h4
+            float: left
+            margin-right: 20px
+
+        .col-xs-6
+          padding-left: 30px
+          padding-right: 30px
+          color: #757575
+
+    #report.active
+      padding-left: 213px
+      @include animateSidebar
+
+    #addStaff 
+      // padding: 18px
+      background: #049cdb
+      color: #fff
+      // margin-bottom: 30px
+
+.alert-wrapper.active
+  top: 10px
+  @include animateSidebar
+
+.alert-wrapper
+  padding: 10px 50px
+  position: absolute
+  top: -70px
+  left: 0
+  width: 100%
+  z-index: 10
+  @include animateSidebar
+
+  .alert
+    width: 70%
+    text-align: left
+
+.modal-dialog
+  font-weight: 300
+
+  .modal-header
+    background-color: #0088cc
+    color: #fff
+    text-transform: uppercase
+
+    .close
+      opacity: 1
+      color: #fff
+
+  .assignedStaff
+    background-color: #ebebeb
+    border-radius: 20px
+    padding: 5px 10px
+    display: inline-block
+    margin-bottom: 5px
+
+    a
+      color: #e61610
+      text-decoration: none
+
+  .assignPeople
+    display: inline-block
+  
+  .row.delete
+    margin-bottom: 10px
+    
+    .delete-study
+      color: #bd362f
+      text-decoration: none
+  
+  input.update-study, button.cancel
+    padding: 10px 30px
+    color: #fff
+    border: none
+    border-radius: 0
+
+  input.update-study
+    background-color: #049cdb
+
+  button.cancel
+    background-color: #ee5f5b    
+
+  .row.form-date
+    margin-bottom: 10px
+
+/* Styling for progress bar on the gantt chart */    
+.event.onemonth
+  // border: 1px solid #b2dba1
+  border-radius: 4px
+
+.event.transparent
+  background-color: transparent
+
+.event.begin
+  // border-left: 1px solid #b2dba1
+  border-top-left-radius: 4px
+  border-bottom-left-radius: 4px
+
+.event.end
+  // border-right: 1px solid #b2dba1
+  border-top-right-radius: 4px
+  border-bottom-right-radius: 4px
+
+.event
+  // border-top: 1px solid #b2dba1
+  // border-bottom: 1px solid #b2dba1
+  background-color: #2196F3
+  color: #3c763d
+  border-width: 1px
+  font-size: .75em
+  padding: 13px
+  overflow: hidden
+  margin-bottom: 1px
+
+/* END: Styling for progress bar on the gantt chart */  
+
+
+
+form
+  
+  input.form-control
+    // border-radius: 0
+
+  textarea.form-control
+    height: 100px
+    // border-radius: 0
+
+#footer
+  height: $footer-height
+  padding-top: 20px
+  border-top: 1px solid $gray-lighter
+  font-size: 0.9*$font-size-base

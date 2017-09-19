@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Fte value:
+  = @fte.FTE_value
+%p
+  %b Startdate:
+  = @fte.startdate
+%p
+  %b Enddate:
+  = @fte.enddate
+%p
+  %b Staff:
+  = @fte.staff
+
+= link_to 'Edit', edit_fte_path(@fte)
+\|
+= link_to 'Back', ftes_path

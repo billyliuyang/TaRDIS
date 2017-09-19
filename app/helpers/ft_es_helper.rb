@@ -1,0 +1,2 @@
+module FtEsHelper
+end

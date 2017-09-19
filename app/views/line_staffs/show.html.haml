@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Staff:
+  = @line_staff.staff
+%p
+  %b Task:
+  = @line_staff.task
+
+= link_to 'Edit', edit_line_staff_path(@line_staff)
+\|
+= link_to 'Back', line_staffs_path

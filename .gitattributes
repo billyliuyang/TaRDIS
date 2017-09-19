@@ -1,0 +1,5 @@
+.git      export-ignore
+csvs      export-ignore
+features  export-ignore
+spec      export-ignore
+

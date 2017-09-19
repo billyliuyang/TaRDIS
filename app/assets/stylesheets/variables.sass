@@ -1,0 +1,22 @@
+@import "bootstrap/variables"
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:300,400,500)
+$font-family: 'Montserrat', sans-serif
+
+$border-generic: 1px solid #e7e7e7
+
+$footer-height: 60px
+$environment-notice-height: 28px
+
+
+@mixin animateColour
+  -webkit-transition: background-color 0.4s ease-in
+  -ms-transition: background-color 0.4s ease-in
+  transition: background-color 0.4s ease-in
+
+@mixin animateSidebar
+  -webkit-transition: all 0.4s ease 0s
+  -moz-transition: all 0.4s ease 0s
+  -ms-transition: all 0.4s ease 0s
+  -o-transition: all 0.4s ease 0s
+  transition: all 0.4s ease 0s

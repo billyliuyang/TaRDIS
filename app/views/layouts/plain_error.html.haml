@@ -1,0 +1,57 @@
+!!!
+%html
+  %head
+    %title Tardis - #{content_for(:title)}
+    %meta{ name: "viewport", content: "width=device-width, initial-scale=1.0" }
+    %meta{ :'http-equiv' => 'X-UA-Compatible', content: 'IE=edge' }
+    = stylesheet_link_tag    "application", media: :all
+    = javascript_include_tag "application"
+    = favicon_link_tag '/favicon.ico'
+
+  %body{ class: environment_notice_body_class }
+    = render 'layouts/environment_notice'
+    .flash-messages
+      - flash.each do |name, msg|
+        - next unless name == 'alert' || name == 'notice'
+        .alert.fade.in
+          .container
+            - if name == 'notice'
+              = fa_icon('check', class: 'flash-success')
+            - else
+              = fa_icon('warning', class: 'flash-error')
+            = msg
+            %a{ href: '#', title: 'Hide this message', data: { dismiss: :alert } } Dismiss
+
+
+    %noscript
+      .warning-page-cover
+        .alert.alert-info
+          %h2 Sorry, it appears that you are using a web browser without JavaScript which prevents us offering you a rich online experience.
+          %p Please enable JavaScript or use a different web browser, or alternatively contact the CiCS Helpdesk for assistance.
+
+    #wrap
+      %nav#main-nav.navbar.navbar-default.navbar-fixed-top
+        .container
+          .navbar-header
+            %button.navbar-toggle{ data: { target: ".navbar-collapse", toggle: :collapse, type: :button } }
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+            = link_to :root, class: 'navbar-brand hidden-sm' do
+              Tardis
+
+          .collapse.navbar-collapse
+            %ul.nav.navbar-nav
+              = navbar_link_to :root, title: "Go to the home page", identifier: :home do
+                = fa_icon 'home'
+                Home
+
+      #main-container.container
+
+        = yield
+
+    %footer#footer
+      .container
+        %p
+          &copy;#{Date.today.year}
+          = link_to 'epiGenesys', 'https://www.epigenesys.org.uk', target: '_blank', title: 'Goto the epiGenesys website'

@@ -1,0 +1,23 @@
+%h1 Listing line_staffs
+
+%table
+  %thead
+    %tr
+      %th Staff
+      %th Task
+      %th
+      %th
+      %th
+
+  %tbody
+    - @line_staffs.each do |line_staff|
+      %tr
+        %td= line_staff.staff
+        %td= line_staff.task
+        %td= link_to 'Show', line_staff
+        %td= link_to 'Edit', edit_line_staff_path(line_staff)
+        %td= link_to 'Destroy', line_staff, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Line staff', new_line_staff_path

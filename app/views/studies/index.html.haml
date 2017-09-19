@@ -1,0 +1,269 @@
+- content_for :title, "Study"
+
+.row#main-content.active
+  .col-xs-3
+    %p.fixed-title STUDY LISTS
+    - @studies.each do |study|
+      .wrapper
+        %a.active.collapsingTask{"aria-controls" => "collapseList#{study.id}", "aria-expanded" => "true", "data-toggle" => "collapse", :href => "#collapseList#{study.id}", :role => "button"}
+          %p
+          .row
+            .col-xs-10
+              = study.title
+              %span
+                = fa_icon 'chevron-down'
+            .col-xs-2
+              %span.text-right.pull-right
+                = link_to edit_study_path(study), class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+                  %i.fa.fa-pencil.fa-lg.text-success{"aria-hidden" => "true"}
+
+        %div{class: 'collapse in', id: "collapseList#{study.id}"}
+          .well.sub-list
+            - study.tasks.order(:startdate).each do |task|
+              .row
+                .col-xs-10
+                  %p= task.title
+                .col-xs-2
+                  %span.text-right.pull-right
+                    = link_to edit_task_path(task), class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal' do
+                      %i.fa.fa-pencil.fa-lg.text-success{"aria-hidden" => "true"}
+
+              / %a{:href => "#"} + Add a task
+            = link_to '+ Add a task', new_task_path(study_id: study), class: 'btn blueiconcolor btn-xs ajax-modal', 'data-toggle': 'ajax-modal'
+
+  .col-xs-9
+    .row.text-center.month
+      .col-xs-12
+        .col-xs-2.text-left
+          = link_to last_year_time_managements_path, method: :post do
+            = fa_icon 'arrow-left'
+        .col-xs-8
+          = @time_management.year
+        .col-xs-2.text-right
+          = link_to next_year_time_managements_path, method: :post do
+            = fa_icon 'arrow-right'
+
+    .row.text-center.month
+      .col-xs-1 Jan
+      .col-xs-1 Feb
+      .col-xs-1 Mar
+      .col-xs-1 Apr
+      .col-xs-1 May
+      .col-xs-1 Jun
+      .col-xs-1 Jul
+      .col-xs-1 Aug
+      .col-xs-1 Sep
+      .col-xs-1 Oct
+      .col-xs-1 Nov
+      .col-xs-1 Dec
+
+    - @studies.each do |study|
+      .row.text-center.area
+        - isStart = false
+        - isFinish = false
+        - 12.times.each_with_index do |index|
+          .col-xs-1
+            - if study.startdate.year == @time_management.year || study.enddate.year == @time_management.year
+              - if (study.enddate.year * 12 + study.enddate.month) - (study.startdate.year * 12 + study.startdate.month) + 1 < 2
+                - if index+1 == study.startdate.month && study.startdate.year == @time_management.year
+                  .event.onemonth
+              - else
+                - if isStart
+                  - if index+1 == study.enddate.month && study.enddate.year == @time_management.year
+                    .event.end
+                    - isStart = false
+                    - isFinish = true
+
+                  - else
+                    .event
+
+                - else
+                  - if index+1 == study.enddate.month && study.enddate.year == @time_management.year
+                    .event.end
+                    - isStart = false
+                    - isFinish = true
+
+                  - if !isFinish
+                    - if index+1 == study.startdate.month && study.startdate.year == @time_management.year
+                      .event.begin
+                      - isStart = true
+
+                    - if study.startdate.year != @time_management.year
+                      .event
+                      - isStart = true
+            - else
+              - if study.startdate.year < @time_management.year && study.enddate.year > @time_management.year
+                .event
+              - else
+                .event.transparent
+
+      - study.tasks.order(:startdate).each do |task|
+        .row.text-center.area{id: "collapseList#{study.id}", class: 'task-link'}
+          - isStart = false
+          - isFinish = false
+          - ldm_boolean = false
+          - dm_boolean = false
+          - sdm_boolean = false
+          - task.line_staffs.each do |line_staff|
+            - if line_staff.grade == 1
+              - ldm_boolean = true
+            - if line_staff.grade == 2
+              - dm_boolean = true
+            - if line_staff.grade == 3
+              - sdm_boolean = true
+          - if ldm_boolean & dm_boolean & sdm_boolean
+            - color = "#81C784"
+          - elsif (!ldm_boolean) & (!dm_boolean) & (!sdm_boolean)
+            - color = "#F44336"
+          - else
+            - color = "#FFC107"
+
+          - 12.times.each_with_index do |index|
+            .col-xs-1
+              - if task.startdate.year == @time_management.year || task.enddate.year == @time_management.year
+                - if (task.enddate.year * 12 + task.enddate.month) - (task.startdate.year * 12 + task.startdate.month) + 1 < 2
+                  - if index+1 == task.startdate.month && task.startdate.year == @time_management.year
+                    .event.onemonth{:style => "background-color:#{color}"}
+                - else
+                  - if isStart
+                    - if index+1 == task.enddate.month && task.enddate.year == @time_management.year
+                      .event.end{:style => "background-color:#{color}"}
+                      - isStart = false
+                      - isFinish = true
+
+                    - else
+                      .event{:style => "background-color:#{color}"}
+
+                  - else
+                    - if index+1 == task.enddate.month && task.enddate.year == @time_management.year
+                      .event.end{:style => "background-color:#{color}"}
+                      - isStart = false
+                      - isFinish = true
+
+                    - if !isFinish
+                      - if index+1 == task.startdate.month && task.startdate.year == @time_management.year
+                        .event.begin{:style => "background-color:#{color}"}
+                        - isStart = true
+
+                      - if task.startdate.year != @time_management.year
+                        .event{:style => "background-color:#{color}"}
+                        - isStart = true
+              - else
+                - if task.startdate.year < @time_management.year && task.enddate.year > @time_management.year
+                  .event{:style => "background-color:#{color}"}
+                - else
+                  .event.transparent
+
+
+      / Blank row for + Add a task
+      .row.text-center.area.active{id: "collapseList#{study.id}", class: 'add-task-link'}
+        - 12.times.each_with_index do |index|
+          .col-xs-1
+            .event.transparent
+
+
+  #report.active
+    %footer.footer
+      .row
+        .col-xs-3
+          %p.header STAFF
+
+        .col-xs-9.header
+          .col-xs-1 Jan
+          .col-xs-1 Feb
+          .col-xs-1 Mar
+          .col-xs-1 Apr
+          .col-xs-1 May
+          .col-xs-1 Jun
+          .col-xs-1 Jul
+          .col-xs-1 Aug
+          .col-xs-1 Sep
+          .col-xs-1 Oct
+          .col-xs-1 Nov
+          .col-xs-1 Dec
+
+      %div.data
+        .row
+          .col-xs-3.text-center
+            - @staffs.each do |staff|
+              - if staff.staffgivenname.nil?
+                %p.name=staff.name  + ' (Availability)'
+                %p.name=staff.name + ' (Allocated)'
+                %p.name=staff.name + ' (Spare)'
+              - else
+                %p.name=staff.staffgivenname  + ' (Availability)'
+                %p.name=staff.staffgivenname + ' (Allocated)'
+                %p.name=staff.staffgivenname + ' (Spare)'
+
+          - @staffs.each do |staff|
+            .col-xs-9
+              - availability_time = []
+              - allocated_time = []
+              .row.text-center
+                - (1..12).each do |report_month|
+                  .col-xs-1
+                    - year_fte = 0
+                    - staff.ftes.each do |fte|
+                      - if fte.enddate.year - fte.startdate.year == 0
+                        - if @time_management.year >= fte.startdate.year && @time_management.year <= fte.enddate.year
+                          - year_fte += 1
+                          - if report_month >= fte.startdate.month && report_month <= fte.enddate.month
+                            %p{:style => "color:blue"}
+                              = available = working_hours_in_month(@time_management.year, report_month) * 90 * fte.FTE_value / 10000
+                              - availability_time.insert(report_month-1, available)
+                      - else
+                        - if @time_management.year == fte.startdate.year
+                          - year_fte += 1
+                          - if report_month >= fte.startdate.month
+                            %p{:style => "color:blue"}
+                              = available = working_hours_in_month(@time_management.year, report_month) * 90 * fte.FTE_value / 10000
+                              - availability_time.insert(report_month-1, available)
+                        - if @time_management.year > fte.startdate.year && @time_management.year < fte.enddate.year
+                          - year_fte += 1
+                          %p{:style => "color:blue"}
+                            = available = working_hours_in_month(@time_management.year, report_month) * 90 * fte.FTE_value / 10000
+                            - availability_time.insert(report_month-1, available)
+                        - if @time_management.year == fte.enddate.year
+                          - year_fte += 1
+                          - if report_month <= fte.enddate.month
+                            %p{:style => "color:blue"}
+                              = available = working_hours_in_month(@time_management.year, report_month) * 90 * fte.FTE_value / 10000
+                              - availability_time.insert(report_month-1, available)
+                    - if year_fte == 0
+                      %p -
+     
+              .row.text-center
+                - (1..12).each do |report_month|
+                  .col-xs-1
+                    - @report_tasks.at(report_month - 1).each do |task|
+                      - if task.line_staffs
+                        - task.line_staffs.each do |line_staff|
+                          - if line_staff.staff.id == staff.id
+                            - if line_staff.grade == 1
+                              - if task.lead_dm_time
+                                - staff.allocatedtime += task.lead_dm_time/((task.enddate.year - task.startdate.year)*12 + (task.enddate.month - task.startdate.month) + 1)
+                                - staff.save
+                            - if line_staff.grade == 2
+                              - if task.dm_time
+                                - staff.allocatedtime += task.dm_time/((task.enddate.year - task.startdate.year)*12 + (task.enddate.month - task.startdate.month) + 1)
+                                - staff.save
+                            - if line_staff.grade == 3
+                              - if task.support_dm_time
+                                - staff.allocatedtime += task.support_dm_time/((task.enddate.year - task.startdate.year)*12 + (task.enddate.month - task.startdate.month) + 1)
+                                - staff.save
+                    %p{:style => "color:orange"}            
+                      = staff.allocatedtime
+                      - allocated_time.insert(report_month-1, staff.allocatedtime)
+                    - staff.allocatedtime = 0
+                    - staff.save
+
+              .row.text-center
+                - (1..12).each do |report_month|
+                  .col-xs-1
+                    %p{:style => "color:green"}
+                      - if availability_time[report_month-1].nil?
+                        = - allocated_time[report_month-1]
+                      - else
+                        = availability_time[report_month-1] - allocated_time[report_month-1]
+
+

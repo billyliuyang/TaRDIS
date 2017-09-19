@@ -1,0 +1,8 @@
+= simple_form_for(@time_management) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :chart_year
+
+  .form-actions
+    = f.button :submit

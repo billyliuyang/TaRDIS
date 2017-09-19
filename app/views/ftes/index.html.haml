@@ -1,0 +1,29 @@
+- content_for :title, "FTE History"
+
+%h1 Listing ftes
+
+%table
+  %thead
+    %tr
+      %th Fte value
+      %th Startdate
+      %th Enddate
+      %th Staff
+      %th
+      %th
+      %th
+
+  %tbody
+    - @ftes.each do |fte|
+      %tr
+        %td= fte.FTE_value
+        %td= fte.startdate
+        %td= fte.enddate
+        %td= fte.staff
+        %td= link_to 'Show', fte
+        %td= link_to 'Edit', edit_fte_path(fte)
+        %td= link_to 'Destroy', fte, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Fte', new_fte_path

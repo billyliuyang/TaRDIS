@@ -1,0 +1,32 @@
+.modal-dialog
+  .modal-content
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"}
+        %span{"aria-hidden" => "true"} ×
+      %h4#myModalLabel.modal-title ADD NEW DATA MANAGER
+    .modal-body{:id => "new_user"}
+      = simple_form_for(@user) do |f|  
+        / = f.error_notification
+
+        .form-inputs
+          / = f.input :username, label: false, placeholder: 'User CiCS Account'
+          .row
+            .col-xs-4
+              %p
+                %b Add CiCS Account
+            .col-xs-6.col-xs-offset-2
+              %input.form-control{:type => "text", :name => 'account', :id => "new_staff"}/
+        %br/
+        .row
+          .col-xs-4
+            = f.label 'Grade'
+          .col-xs-6.col-xs-offset-2
+            = f.input :grade, collection: 4..8, label: false
+
+        .form-actions.text-center
+          .row
+            .col-xs-3.col-xs-offset-3
+              %button.btn.btn-default.cancel{"data-dismiss" => "modal", :type => "button"} CANCEL
+            .col-xs-3
+              = f.button :submit, :class => 'update-study', value: 'CREATE STAFF'
+            .col-xs-3

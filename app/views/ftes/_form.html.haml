@@ -1,0 +1,11 @@
+= simple_form_for(@fte) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :FTE_value
+    = f.input :startdate
+    = f.input :enddate
+    = f.association :staff
+
+  .form-actions
+    = f.button :submit
